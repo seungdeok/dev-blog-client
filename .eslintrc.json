@@ -11,7 +11,8 @@
     "plugin:react/recommended",
     "airbnb",
     "plugin:prettier/recommended",
-    "next/core-web-vitals"
+    "next/core-web-vitals",
+    "plugin:storybook/recommended"
   ],
   "settings": {
     "react": {
@@ -55,7 +56,16 @@
     "react/prefer-stateless-function": 0,
     "react/jsx-filename-extension": 0,
     "react/jsx-one-expression-per-line": 0,
-    "no-nested-ternary": 0
+    "no-nested-ternary": 0,
+    "react/require-default-props": 0,
+    "react/no-unescaped-entities": 0,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": ["**/stories/**", "**/*.spec.tsx", "**/jest.*.js"],
+        "optionalDependencies": false
+      }
+    ]
   },
   "globals": {
     "React": "writable"
