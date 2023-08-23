@@ -65,7 +65,8 @@
         "devDependencies": ["**/stories/**", "**/*.spec.tsx", "**/jest.*.js"],
         "optionalDependencies": false
       }
-    ]
+    ],
+    "react/no-children-prop": 0
   },
   "globals": {
     "React": "writable"
