@@ -12,6 +12,12 @@ const S = {
     ${({ theme }) =>
       theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
     padding: 16px 0;
+    transition: 0.3s;
+    opacity: .75;
+
+    &:hover {
+      opacity: 1;
+    }
   `,
   cardIntro: styled.div`
     width: 100%;
