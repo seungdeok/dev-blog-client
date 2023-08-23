@@ -9,12 +9,16 @@ import { Footer } from '@/components/layouts/Footer/Footer';
 import StyledComponentsRegistry from '@/components/hocs/ReactQueryProvider';
 import ReactQueryProvider from '@/components/hocs/registry';
 import WithAuthSession from '@/components/hocs/WithAuthSession';
+import { usePathname } from 'next/navigation';
+import { AdminHeader } from '@/components/layouts/Header/AdminHeader';
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const isAdmin = pathname.includes('/admin');
   return (
     <html lang="ko">
       <body>
@@ -23,7 +27,7 @@ export default function RootLayout({
             <StyledComponentsRegistry>
               <GlobalStyles />
               <ThemeProvider theme={theme}>
-                <Header />
+                {isAdmin ? <AdminHeader /> : <Header />}
                 <Main>{children}</Main>
                 <Footer />
               </ThemeProvider>
