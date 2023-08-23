@@ -47,14 +47,12 @@ const S = {
   `,
 };
 
-export default function PostPage({ params }: { params: { post_id: string } }) {
+export default function PostPage() {
   const post = {
     title: 'Typescript 도입',
     thumbnail: '/avatar.jpeg',
     modified_at: new Date(),
   };
-
-  console.log(params.post_id);
 
   return (
     <S.container>

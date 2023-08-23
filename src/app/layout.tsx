@@ -6,8 +6,9 @@ import theme from '@/styles/theme';
 import { Header } from '@/components/layouts/Header/Header';
 import { Main } from '@/components/layouts/Main/Main';
 import { Footer } from '@/components/layouts/Footer/Footer';
-import StyledComponentsRegistry from './registry';
-import ReactQueryProvider from './ReactQueryProvider';
+import StyledComponentsRegistry from '@/components/hocs/ReactQueryProvider';
+import ReactQueryProvider from '@/components/hocs/registry';
+import WithAuthSession from '@/components/hocs/WithAuthSession';
 
 export default function RootLayout({
   children,
@@ -17,16 +18,18 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <ReactQueryProvider>
-          <StyledComponentsRegistry>
-            <GlobalStyles />
-            <ThemeProvider theme={theme}>
-              <Header />
-              <Main>{children}</Main>
-              <Footer />
-            </ThemeProvider>
-          </StyledComponentsRegistry>
-        </ReactQueryProvider>
+        <WithAuthSession>
+          <ReactQueryProvider>
+            <StyledComponentsRegistry>
+              <GlobalStyles />
+              <ThemeProvider theme={theme}>
+                <Header />
+                <Main>{children}</Main>
+                <Footer />
+              </ThemeProvider>
+            </StyledComponentsRegistry>
+          </ReactQueryProvider>
+        </WithAuthSession>
       </body>
     </html>
   );
