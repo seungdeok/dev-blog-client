@@ -22,6 +22,10 @@ const theme: DefaultTheme = {
       'sky-blue': '#33cbcb',
       'purple-blue': '#6619c2',
     },
+    text: {
+      222222: '#222222',
+      444444: '#444444',
+    },
   },
   MIXINS: {
     // flex

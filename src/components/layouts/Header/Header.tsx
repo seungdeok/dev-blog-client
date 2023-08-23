@@ -10,9 +10,12 @@ const S = {
     ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'space-between')}
     width: 100%;
     height: 80px;
-    padding: 0 40px;
+    padding: 0 16px;
     z-index: 1001;
-    background-color: ${({ theme }) => theme.colors.white};
+
+    img {
+      border-radius: 50%;
+    }
   `,
 };
 

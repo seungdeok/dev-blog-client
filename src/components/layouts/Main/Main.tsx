@@ -7,7 +7,7 @@ const S = {
     ${({ theme }) => theme.MIXINS.flexBox('column')}
     width: 100%;
     height: 100vh;
-    padding: 80px 0 20px;
+    padding: 80px 16px 20px;
   `,
 };
 
