@@ -56,13 +56,13 @@ const S = {
   `,
 };
 
-export default function AdminPostPage() {
+export default function AdminPostWritePage() {
   const router = useRouter();
   const [data, setData] = useState('**Hello world!!!**');
   const [categoryName, setCategoryName] = useState('');
 
   const handleSubmit = () => {
-    if (window.confirm('수정하시겠습니까?')) {
+    if (window.confirm('게시하시게습니까?')) {
       console.log({ categoryName, data });
       router.push('/admin/posts');
     }
@@ -89,7 +89,7 @@ export default function AdminPostPage() {
             <Editor data={data} setter={setData} />
           </S.editorWrap>
           <S.action type="button" onClick={handleSubmit}>
-            수정
+            게시
           </S.action>
         </S.sectionColContent>
       </S.section>
