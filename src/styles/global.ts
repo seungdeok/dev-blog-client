@@ -1,8 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
 import { resetStyles } from './reset';
+import { markdownStyle } from './markdown';
 
 export const GlobalStyles = createGlobalStyle`
   ${resetStyles}
+  ${markdownStyle}
 
   * {
       box-sizing: border-box;

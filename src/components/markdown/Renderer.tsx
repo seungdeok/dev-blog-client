@@ -1,14 +1,9 @@
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import MDEditor from '@uiw/react-md-editor';
 
 interface Props {
   data: string;
 }
 
 export function Renderer({ data }: Props) {
-  return (
-    <>
-      <ReactMarkdown children={data} remarkPlugins={[remarkGfm]} />
-    </>
-  );
+  return <MDEditor.Markdown source={data} style={{ whiteSpace: 'pre-wrap' }} />;
 }

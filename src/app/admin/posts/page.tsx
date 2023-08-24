@@ -1,8 +1,8 @@
 'use client';
 
-import { PostCard } from '@/components/card/PostCard';
 import Link from 'next/link';
 import { styled } from 'styled-components';
+import { AdminPostCard } from '@/components/card/AdminPostCard';
 
 const S = {
   container: styled.div`
@@ -37,6 +37,11 @@ const S = {
 };
 
 export default function AdminPostPage() {
+  const handleDelete = (id: number) => (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    console.log(id);
+  };
+
   const posts = [
     {
       id: 1,
@@ -75,11 +80,12 @@ export default function AdminPostPage() {
       <S.section>
         <S.sectionColContent>
           {posts.map(post => (
-            <Link key={post.id} href={`/posts/${post.id}`}>
-              <PostCard
+            <Link key={post.id} href={`/admin/posts/${post.id}`}>
+              <AdminPostCard
                 title={post.title}
                 draft={post.draft}
                 modified_at={post.modified_at}
+                onDelete={handleDelete(post.id)}
               />
             </Link>
           ))}
