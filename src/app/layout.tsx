@@ -12,6 +12,11 @@ import WithAuthSession from '@/components/hocs/WithAuthSession';
 import { usePathname } from 'next/navigation';
 import { AdminHeader } from '@/components/layouts/Header/AdminHeader';
 
+if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
+  // eslint-disable-next-line global-require
+  require('../mocks');
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -19,6 +24,7 @@ export default function RootLayout({
 }) {
   const pathname = usePathname();
   const isAdmin = pathname.includes('/admin');
+
   return (
     <html lang="ko">
       <body>

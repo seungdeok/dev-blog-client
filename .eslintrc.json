@@ -62,7 +62,12 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": ["**/stories/**", "**/*.spec.tsx", "**/jest.*.js"],
+        "devDependencies": [
+          "**/stories/**",
+          "**/*.spec.tsx",
+          "**/jest.*.js",
+          "**/mocks/*.ts"
+        ],
         "optionalDependencies": false
       }
     ],
