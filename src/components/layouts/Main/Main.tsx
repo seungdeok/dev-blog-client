@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import { ReactNode } from 'react';
 
 const S = {
-  section: styled.section`
+  container: styled.main`
     ${({ theme }) => theme.MIXINS.flexBox('column')}
     width: 100%;
     height: 100vh;
@@ -12,5 +12,5 @@ const S = {
 };
 
 export const Main = ({ children }: { children: ReactNode }) => {
-  return <S.section>{children}</S.section>;
+  return <S.container>{children}</S.container>;
 };

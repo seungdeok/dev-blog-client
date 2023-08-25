@@ -50,7 +50,7 @@
         "namedComponents": ["arrow-function", "function-declaration"]
       }
     ],
-    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
     "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": 0,
     "react/prefer-stateless-function": 0,
@@ -71,7 +71,8 @@
         "optionalDependencies": false
       }
     ],
-    "react/no-children-prop": 0
+    "react/no-children-prop": 0,
+    "jsx-a11y/label-has-associated-control": 0
   },
   "globals": {
     "React": "writable"
