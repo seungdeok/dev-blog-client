@@ -26,6 +26,7 @@ export default function WithAuth({ children }: Props) {
 
   const onSubmit = async (data: FormProps) => {
     await authAPI.login(data.username, data.password);
+    window.location.reload();
   };
 
   if (loading) {

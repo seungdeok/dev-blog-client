@@ -2,6 +2,7 @@
 import { styled } from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
+import { signOut } from '@/utils/auth/signOut';
 
 const S = {
   header: styled.header`
@@ -50,9 +51,10 @@ export const routes = [
 
 export const AdminHeader = () => {
   const handleClick = () => {
-    // if (isLoggedIn && window.confirm('로그아웃하시겠습니까?')) {
-    //   signOut();
-    // }
+    if (window.confirm('로그아웃하시겠습니까?')) {
+      signOut();
+      window.location.reload();
+    }
   };
 
   // eslint-disable-next-line no-unused-vars
