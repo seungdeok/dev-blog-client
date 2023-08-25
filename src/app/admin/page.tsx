@@ -1,7 +1,7 @@
 'use client';
 
 import { styled } from 'styled-components';
-import { useAuthSession } from '@/hooks/useAuthSession';
+import WithAuth from '@/components/hocs/WithAuth';
 
 const S = {
   container: styled.div`
@@ -58,25 +58,15 @@ const S = {
 };
 
 export default function AdminPage() {
-  const { isLoggedIn, signIn } = useAuthSession();
-  if (!isLoggedIn) {
-    return (
-      <S.entrance>
-        <h3>관리자 계정으로 로그인해주세요</h3>
-        <button type="button" onClick={() => signIn()}>
-          sign in
-        </button>
-      </S.entrance>
-    );
-  }
-
   return (
-    <S.container>
-      <S.section>
-        <S.sectionColContent>
-          <S.sectionHeading>통계</S.sectionHeading>
-        </S.sectionColContent>
-      </S.section>
-    </S.container>
+    <WithAuth>
+      <S.container>
+        <S.section>
+          <S.sectionColContent>
+            <S.sectionHeading>통계</S.sectionHeading>
+          </S.sectionColContent>
+        </S.section>
+      </S.container>
+    </WithAuth>
   );
 }

@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import { resetStyles } from './reset';
 import { markdownStyle } from './markdown';
+import theme from './theme';
 
 export const GlobalStyles = createGlobalStyle`
   ${resetStyles}
@@ -12,6 +13,10 @@ export const GlobalStyles = createGlobalStyle`
 
   a {
     text-decoration: none;
+  }
+
+  body {
+    background-color: ${theme.colors.gray.f5f6f7};
   }
 
   button {

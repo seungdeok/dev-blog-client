@@ -6,7 +6,6 @@ const S = {
     ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'space-between')}
     padding: 30px 40px;
     border-top: 1px solid ${({ theme }) => theme.colors.gray.eaeaea};
-    background-color: ${({ theme }) => theme.colors.white};
   `,
   copyright: styled.p`
     font-size: 14px;

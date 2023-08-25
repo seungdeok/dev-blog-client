@@ -2,7 +2,6 @@
 import { styled } from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useAuthSession } from '@/hooks/useAuthSession';
 
 const S = {
   header: styled.header`
@@ -50,18 +49,18 @@ export const routes = [
 ];
 
 export const AdminHeader = () => {
-  const { isLoggedIn, signOut } = useAuthSession();
-
   const handleClick = () => {
-    if (isLoggedIn && window.confirm('로그아웃하시겠습니까?')) {
-      signOut();
-    }
+    // if (isLoggedIn && window.confirm('로그아웃하시겠습니까?')) {
+    //   signOut();
+    // }
   };
 
-  const handleLink = () => {
-    if (!isLoggedIn) {
-      window.alert('접근 권한이 없습니다');
-    }
+  // eslint-disable-next-line no-unused-vars
+  const handleLink = (e: React.MouseEvent<HTMLElement>) => {
+    // if (!isLoggedIn) {
+    //   e.preventDefault();
+    //   window.alert('접근 권한이 없습니다');
+    // }
   };
 
   return (
@@ -77,7 +76,7 @@ export const AdminHeader = () => {
         ))}
       </S.links>
       <S.action type="button" onClick={handleClick}>
-        {isLoggedIn && 'sign out'}
+        sign out
       </S.action>
     </S.header>
   );

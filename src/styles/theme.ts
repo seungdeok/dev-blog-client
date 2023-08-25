@@ -13,6 +13,8 @@ const theme: DefaultTheme = {
     gray: {
       747474: '#747474',
       eaeaea: '#eaeaea',
+      f5f6f7: '#f5f6f7',
+      f9fbfc: '#f9fbfc',
     },
     black: '#000000',
     background: {
@@ -25,6 +27,12 @@ const theme: DefaultTheme = {
     text: {
       222222: '#222222',
       444444: '#444444',
+    },
+    primary: '#006aff',
+    secondary: '#ebedf0',
+    status: {
+      success: '#00b248',
+      failure: '#f44336',
     },
   },
   MIXINS: {
