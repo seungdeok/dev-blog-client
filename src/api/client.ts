@@ -2,18 +2,23 @@ import { getStorageItem } from '@/utils/storage';
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
+interface FetchOption {
+  method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
+  headers: { [key: string]: string };
+  body?: string;
+}
+
 async function fetchAPI(
   url: string,
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
   body?: { [key: string]: any }
 ) {
-  const options = {
+  const options: FetchOption = {
     method,
     headers: {
       Authorization: `Bearer ${getStorageItem('accessToken')}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({}),
   };
 
   if (method === 'POST' || method === 'PATCH') {
@@ -26,7 +31,12 @@ async function fetchAPI(
     throw new Error('Failed to fetch data');
   }
 
-  return res.json();
+  const contentType = res.headers.get('content-type');
+  const jsonParseAvailable = contentType && /json/.test(contentType);
+
+  const data = jsonParseAvailable ? await res.json() : await res.text();
+
+  return data;
 }
 
 export const client = {

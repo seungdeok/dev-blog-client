@@ -1,8 +1,12 @@
 'use client';
 
-import { AdminCategoryCard } from '@/components/card/AdminCategoryCard';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { styled } from 'styled-components';
+import { categoryAPI } from '@/api/category';
+import { AdminCategoryCard } from '@/components/card/AdminCategoryCard';
+import WithAuth from '@/components/hocs/WithAuth';
+import { Category } from '@/types/Category';
 
 const S = {
   container: styled.div`
@@ -35,84 +39,101 @@ const S = {
     }
   `,
   form: styled.form`
-    input {
+  ${({ theme }) => theme.MIXINS.flexBox('row', 'flex-start', 'flex-start')};
+    input[type="text"] {
       width: 200px;
       height: 40px;
     }
-    button {
+    p {
+      margin-top: 4px;
+      font-size: 14px;
+      color: ${({ theme }) => theme.colors.status.failure};
+    }
+    input[type="submit"] {
       margin-left: 8px;
       padding: 8px 6px;
+      height: 40px;
     }
   `,
   sectionHeading: styled.h2`
     font-weight: bold;
     font-size: 24px;
   `,
+  input: styled.div`
+  `,
 };
 
+interface FormProps {
+  categoryName: string;
+}
+
 export default function AdminCategoriesPage() {
-  const [categoryName, setCategoryName] = useState('');
-  const data = [
-    {
-      id: 1,
-      name: 'category1',
-    },
-    {
-      id: 2,
-      name: 'category2',
-    },
-    {
-      id: 3,
-      name: 'category3',
-    },
-    {
-      id: 4,
-      name: 'category4',
-    },
-    {
-      id: 5,
-      name: 'category5',
-    },
-  ];
-
-  const handleChange = ({ target }: { target: { value: string } }) => {
-    setCategoryName(target.value);
+  const [categoryList, setCategoryList] = useState<Category[]>([]);
+  const defaultValues = {
+    categoryName: '',
   };
 
-  const handleSubmit = () => {
-    console.log(categoryName);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues,
+  });
+
+  async function initRequest() {
+    const categoryResponse = await categoryAPI.list();
+    setCategoryList([...categoryResponse]);
+  }
+
+  const handleUpdate = async (id: number, name: string) => {
+    await categoryAPI.update(id, name);
+    await initRequest();
   };
 
-  const handleUpdate = (id: number, name: string) => {
-    console.log(id, name);
+  const handleDelete = async (id: number) => {
+    await categoryAPI.remove(id);
+    await initRequest();
   };
-  const handleDelete = (id: number) => {
-    console.log(id);
+
+  const onSubmit = async (data: FormProps) => {
+    await categoryAPI.create(data.categoryName);
+    await initRequest();
   };
+
+  useEffect(() => {
+    initRequest();
+  }, []);
 
   return (
-    <S.container>
-      <S.heading>카테고리 관리</S.heading>
-      <S.section>
-        <S.sectionHeading>New</S.sectionHeading>
-        <S.form>
-          <input value={categoryName} onChange={handleChange} />
-          <button type="button" onClick={handleSubmit}>
-            submit
-          </button>
-        </S.form>
-        <S.sectionColContent>
-          <S.sectionHeading>Categories</S.sectionHeading>
-          {data.map(category => (
-            <AdminCategoryCard
-              key={category.id}
-              name={category.name}
-              onUpdate={(name: string) => handleUpdate(category.id, name)}
-              onDelete={() => handleDelete(category.id)}
-            />
-          ))}
-        </S.sectionColContent>
-      </S.section>
-    </S.container>
+    <WithAuth>
+      <S.container>
+        <S.heading>카테고리 관리</S.heading>
+        <S.section>
+          <S.sectionHeading>New</S.sectionHeading>
+          <S.form onSubmit={handleSubmit(onSubmit)}>
+            <S.input>
+              <input
+                type="text"
+                {...register('categoryName', { required: true })}
+              />
+              {errors.categoryName && <p>카테고리 형식에 맞지 않습니다</p>}
+            </S.input>
+            <input type="submit" value="등록" />
+          </S.form>
+          <S.sectionColContent>
+            <S.sectionHeading>Categories</S.sectionHeading>
+            {categoryList.map(item => (
+              <AdminCategoryCard
+                key={item.name}
+                name={item.name}
+                onUpdate={(name: string) => handleUpdate(item.id, name)}
+                onDelete={() => handleDelete(item.id)}
+              />
+            ))}
+          </S.sectionColContent>
+        </S.section>
+      </S.container>
+    </WithAuth>
   );
 }
