@@ -1,3 +1,4 @@
+import { beforeDateFormat } from '@/utils/dateFormat';
 import { styled } from 'styled-components';
 
 interface Props {
@@ -58,7 +59,7 @@ export function AdminPostCard({
     <S.postCard>
       <S.cardIntro>
         <S.cardHeading>{title}</S.cardHeading>
-        <S.cardDatetime>{modifiedAt.toDateString()}</S.cardDatetime>
+        <S.cardDatetime>{beforeDateFormat(modifiedAt)}</S.cardDatetime>
       </S.cardIntro>
       <S.cardContent>{draft}</S.cardContent>
       <S.actions>

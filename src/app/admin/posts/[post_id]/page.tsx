@@ -1,9 +1,13 @@
 'use client';
 
-import { Editor } from '@/components/markdown/Editor';
-import { useRouter } from 'next/navigation';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { styled } from 'styled-components';
+import { categoryAPI } from '@/api/category';
+import { postAPI } from '@/api/post';
+import WithAuth from '@/components/hocs/WithAuth';
+import { Editor } from '@/components/markdown/Editor';
+import { Category } from '@/types/Category';
 
 const S = {
   container: styled.div`
@@ -26,7 +30,7 @@ const S = {
     ${({ theme }) =>
       theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
   `,
-  sectionColContent: styled.ul`
+  form: styled.form`
     width: 100%;
     margin-top: 12px;
     
@@ -41,58 +45,155 @@ const S = {
     font-weight: 500;
     border: 1px solid ${({ theme }) => theme.colors.text['222222']};
   `,
-  input: styled.input`
+  input: styled.div`
     width: 100%;
     height: 40px;
-    border: 1px solid ${({ theme }) => theme.colors.text['222222']};
     margin-top: 12px;
+
+    input {
+      padding-left: 10px;
+      width: 100%;
+      height: 100%;
+      border: 1px solid ${({ theme }) => theme.colors.text['222222']};
+    }
   `,
   editorWrap: styled.div`
     width: 100%;
     margin-top: 12px;
   `,
-  action: styled.button`
+  action: styled.input`
     margin-top: 12px;
+    ${({ theme }) => theme.MIXINS.flexBox('column', 'center', 'center')};
+    padding: 16px 0px;
+    width: 100%;
+    background-color: ${({ theme }) => theme.colors.gray['747474']};
+    color: ${({ theme }) => theme.colors.white};
+    transition: 0.3s;
+    opacity: .75;
+    border: none;
+    cursor: pointer;
+  
+    &:hover {
+      opacity: 1;
+      background-color: ${({ theme }) => theme.colors.black};
+    }
   `,
 };
 
-export default function AdminPostPage() {
-  const router = useRouter();
-  const [data, setData] = useState('**Hello world!!!**');
-  const [categoryName, setCategoryName] = useState('');
+interface FormProps {
+  title: string;
+  draft: string;
+  tags: string;
+}
 
-  const handleSubmit = () => {
+export default function AdminPostWritePage({
+  params,
+}: {
+  params: { post_id: string };
+}) {
+  const [content, setContent] = useState('**Hello world!!!**');
+  const [categoryId, setCategoryId] = useState(-1);
+  const [categoryName, setCategoryName] = useState('');
+  const [categoryList, setCategoryList] = useState<Category[]>([]);
+
+  const defaultValues = {
+    title: '',
+    draft: '',
+    tags: '',
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    defaultValues,
+  });
+
+  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setCategoryId(Number(e.target.value));
+  };
+
+  const onSubmit = async (data: FormProps) => {
     if (window.confirm('수정하시겠습니까?')) {
-      console.log({ categoryName, data });
-      router.push('/admin/posts');
+      await postAPI.update(
+        Number(params.post_id),
+        categoryId,
+        data.draft,
+        data.tags,
+        data.title,
+        content
+      );
+      alert('반영되었습니다');
     }
   };
 
-  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setCategoryName(e.target.value);
-  };
+  useEffect(() => {
+    async function initRequest() {
+      const [categoryResponse, postResponse] = await Promise.all([
+        categoryAPI.list(),
+        postAPI.show(Number(params.post_id)),
+      ]);
+
+      setCategoryList([...categoryResponse]);
+      setCategoryId(postResponse.id);
+      setCategoryName(postResponse.categoryName);
+      setContent(postResponse.content);
+      setValue('draft', postResponse.draft);
+      setValue('tags', postResponse.tags);
+      setValue('title', postResponse.title);
+    }
+    initRequest();
+  }, [params.post_id, setValue]);
 
   return (
-    <S.container>
-      <S.heading>포스트 작성</S.heading>
-      <S.section>
-        <S.sectionColContent>
-          <S.select onChange={handleSelectChange}>
-            <option disabled selected>
-              카테고리 선택
-            </option>
-            <option value="dev">dev</option>
-          </S.select>
-          <S.input placeholder="제목을 입력해주세요" />
-          <S.input placeholder="초안을 입력해주세요" />
-          <S.editorWrap>
-            <Editor data={data} setter={setData} />
-          </S.editorWrap>
-          <S.action type="button" onClick={handleSubmit}>
-            수정
-          </S.action>
-        </S.sectionColContent>
-      </S.section>
-    </S.container>
+    <WithAuth>
+      <S.container>
+        <S.heading>포스트 작성</S.heading>
+        <S.section>
+          <S.form onSubmit={handleSubmit(onSubmit)}>
+            <S.select value={categoryName} onChange={handleSelectChange}>
+              <option disabled selected>
+                카테고리 선택
+              </option>
+              {categoryList.map(item => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </S.select>
+            <S.input>
+              <input
+                type="text"
+                placeholder="제목을 입력해주세요"
+                {...register('title', { required: true })}
+              />
+              {errors.draft && <p>제목 형식에 맞지 않습니다</p>}
+            </S.input>
+            <S.input>
+              <input
+                type="text"
+                placeholder="초안을 입력해주세요"
+                {...register('draft', { required: true })}
+              />
+              {errors.draft && <p>초안 형식에 맞지 않습니다</p>}
+            </S.input>
+            <S.editorWrap>
+              <Editor data={content} setter={setContent} />
+            </S.editorWrap>
+            <S.input>
+              <input
+                type="text"
+                placeholder="태그를 입력해주세요(#구분자)"
+                {...register('tags', { required: true })}
+              />
+              {errors.tags && <p>태그 형식에 맞지 않습니다</p>}
+            </S.input>
+            <S.action type="submit" value="수정" />
+          </S.form>
+        </S.section>
+      </S.container>
+    </WithAuth>
   );
 }

@@ -2,6 +2,10 @@
 
 import { styled } from 'styled-components';
 import { Renderer } from '@/components/markdown/Renderer';
+import { useEffect, useState } from 'react';
+import { postAPI } from '@/api/post';
+import { Post } from '@/types/Post';
+import { beforeDateFormat } from '@/utils/dateFormat';
 
 const S = {
   container: styled.div`
@@ -22,45 +26,30 @@ const S = {
     color: ${({ theme }) => theme.colors.gray['747474']};
     margin-top: 12px;
   `,
-  thumbnail: styled.div`
-    margin-top: 12px;
-    position: relative;
-    width: 100%;
-    padding-top: 50%; 
-    
-    div {
-      max-width: 100%;
-      cursor: zoom-in;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  `,
   section: styled.section`
     width: 100%;
     margin-top: 48px;
   `,
 };
 
-export default function PostPage() {
-  const post = {
-    title: 'Typescript 도입',
-    thumbnail: '/avatar.jpeg',
-    modified_at: new Date(),
-  };
+export default function PostPage({ params }: { params: { post_id: string } }) {
+  const [postData, setPostData] = useState<Post>();
 
+  useEffect(() => {
+    async function initRequest() {
+      const postResponse = await postAPI.show(Number(params.post_id));
+      setPostData(postResponse);
+    }
+    initRequest();
+  }, [params.post_id]);
+
+  if (!postData) {
+    return <div>error</div>;
+  }
   return (
     <S.container>
-      <S.heading>{post.title}</S.heading>
-      <S.datetime>{post.modified_at.toDateString()}</S.datetime>
-      <S.thumbnail>
-        <div style={{ backgroundImage: `url(${post.thumbnail})` }} />
-      </S.thumbnail>
+      <S.heading>{postData.title}</S.heading>
+      <S.datetime>{beforeDateFormat(postData.modified_at)}</S.datetime>
       <S.section>
         <Renderer
           data={`
