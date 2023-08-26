@@ -1,11 +1,13 @@
 'use client';
 
-import { CategoryCard } from '@/components/card/CategoryCard';
-import { PostCard } from '@/components/card/PostCard';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
+import { categoryAPI } from '@/api/category';
+import { CategoryCard } from '@/components/card/CategoryCard';
+import { PostCard } from '@/components/card/PostCard';
+import { Category } from '@/types/Category';
 
 const S = {
   container: styled.div`
@@ -69,6 +71,13 @@ const S = {
 };
 
 export default function HomePage() {
+  const [categoryList, setCategoryList] = useState<Category[]>([]);
+
+  async function initRequest() {
+    const categoryResponse = await categoryAPI.list();
+    setCategoryList([...categoryResponse]);
+  }
+
   const posts = [
     {
       id: 1,
@@ -102,6 +111,10 @@ export default function HomePage() {
     },
   ];
 
+  useEffect(() => {
+    initRequest();
+  }, []);
+
   return (
     <S.container>
       <S.heading>docs.SEUNGDEOK.com</S.heading>
@@ -134,10 +147,10 @@ export default function HomePage() {
       <S.section>
         <S.sectionHeading>Categories</S.sectionHeading>
         <S.sectionRowContent>
-          {React.Children.map(['dev', 'devops', 'project'], category => {
+          {categoryList.map(item => {
             return (
-              <Link key={category} href={`/categories/${category}`}>
-                <CategoryCard categoryName={category} />
+              <Link key={item.name} href={`/categories/${item.name}`}>
+                <CategoryCard categoryName={item.name} />
               </Link>
             );
           })}
