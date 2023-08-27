@@ -68,7 +68,7 @@ export const AdminHeader = () => {
   return (
     <S.header>
       <Link href="/admin">
-        <Image alt="avatar" src="/avatar.jpeg" width={48} height={48} />
+        <Image alt="avatar" src="/avatar.png" width={48} height={48} />
       </Link>
       <S.links>
         {routes.map(route => (
