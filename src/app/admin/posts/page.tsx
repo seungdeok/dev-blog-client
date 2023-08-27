@@ -35,6 +35,7 @@ const S = {
     a {
       ${({ theme }) =>
         theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
+      margin-bottom: 16px;
     }
   `,
   floatingAction: styled.div`
