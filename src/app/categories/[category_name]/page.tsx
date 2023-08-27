@@ -54,14 +54,14 @@ export default function CategoryPage({
 }) {
   const [postList, setPostList] = useState<Post[]>([]);
 
-  async function initRequest() {
-    const postResponse = await postAPI.list();
-    setPostList([...postResponse]);
-  }
-
   useEffect(() => {
+    async function initRequest() {
+      const postResponse = await postAPI.list(1, params.category_name);
+      setPostList([...postResponse]);
+    }
+
     initRequest();
-  }, []);
+  }, [params.category_name]);
 
   return (
     <S.container>

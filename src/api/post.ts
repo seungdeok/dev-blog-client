@@ -46,8 +46,10 @@ const remove = async (id: number) => {
   return response;
 };
 
-const list = async () => {
-  const response: Post[] = await client.get('post');
+const list = async (page = 1, categoryName = '') => {
+  let url = `post?page=${page}`;
+  if (categoryName) url += categoryName;
+  const response: Post[] = await client.get(url);
 
   return response;
 };
