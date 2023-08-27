@@ -26,6 +26,11 @@ export default function RootLayout({
 
   return (
     <html lang="ko">
+      <head>
+        <link rel="icon" href="/avatar.jpeg" sizes="any" />
+        <link rel="icon" href="/avatar.jpeg" sizes="any" />
+        <link rel="apple-touch-icon" href="/avatar.jpeg" sizes="any" />
+      </head>
       <body>
         <ReactQueryProvider>
           <StyledComponentsRegistry>
