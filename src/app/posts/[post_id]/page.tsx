@@ -51,12 +51,7 @@ export default function PostPage({ params }: { params: { post_id: string } }) {
       <S.heading>{postData.title}</S.heading>
       <S.datetime>{beforeDateFormat(postData.modified_at)}</S.datetime>
       <S.section>
-        <Renderer
-          data={`
-Just a link: https://reactjs.com.
-> test
-- text2`}
-        />
+        <Renderer data={postData.content} />
       </S.section>
     </S.container>
   );
