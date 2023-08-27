@@ -1,7 +1,10 @@
 'use client';
 
+import { postAPI } from '@/api/post';
 import { PostCard } from '@/components/card/PostCard';
+import { Post } from '@/types/Post';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
 const S = {
@@ -39,6 +42,7 @@ const S = {
     a {
       ${({ theme }) =>
         theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
+      margin-bottom: 16px;
     }
   `,
 };
@@ -48,50 +52,29 @@ export default function CategoryPage({
 }: {
   params: { category_name: string };
 }) {
-  const posts = [
-    {
-      id: 1,
-      title: 'title',
-      draft: 'content draft',
-      modified_at: new Date(),
-    },
-    {
-      id: 2,
-      title: 'title2',
-      draft: 'content draft2',
-      modified_at: new Date(),
-    },
-    {
-      id: 3,
-      title: 'title3',
-      draft: 'content draft2',
-      modified_at: new Date(),
-    },
-    {
-      id: 4,
-      title: 'title4',
-      draft: 'content draft2',
-      modified_at: new Date(),
-    },
-    {
-      id: 5,
-      title: 'title5',
-      draft: 'content draft2',
-      modified_at: new Date(),
-    },
-  ];
+  const [postList, setPostList] = useState<Post[]>([]);
+
+  async function initRequest() {
+    const postResponse = await postAPI.list();
+    setPostList([...postResponse]);
+  }
+
+  useEffect(() => {
+    initRequest();
+  }, []);
+
   return (
     <S.container>
       <S.secondaryHeading>category</S.secondaryHeading>
       <S.heading>{params.category_name}</S.heading>
       <S.section>
         <S.sectionColContent>
-          {posts.map(post => (
-            <Link key={post.id} href={`/posts/${post.id}`}>
+          {postList.map(item => (
+            <Link key={item.id} href={`/posts/${item.id}`}>
               <PostCard
-                title={post.title}
-                draft={post.draft}
-                modified_at={post.modified_at}
+                title={item.title}
+                draft={item.draft}
+                modified_at={item.modified_at}
               />
             </Link>
           ))}

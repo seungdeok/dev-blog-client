@@ -56,6 +56,25 @@ const theme: DefaultTheme = {
       }
       return '';
     },
+
+    textEllipsis: (line = 1) => {
+      if (line > 1) {
+        return `
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: ${line};
+          word-wrap: break-word;
+          -webkit-box-orient: vertical;
+          width: 100%;
+        `;
+      }
+      return `
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      `;
+    },
   },
   media: {
     custom: customMediaQuery,
