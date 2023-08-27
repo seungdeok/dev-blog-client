@@ -27,9 +27,12 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <link rel="icon" href="/avatar.jpeg" sizes="any" />
-        <link rel="icon" href="/avatar.jpeg" sizes="any" />
-        <link rel="apple-touch-icon" href="/avatar.jpeg" sizes="any" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/favicon.jpeg" sizes="16x16" />
+        <link rel="icon" href="/favicon.jpeg" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/avatar.png" />
+        <link rel="shortcut icon" href="/avatar.png" />
       </head>
       <body>
         <ReactQueryProvider>
