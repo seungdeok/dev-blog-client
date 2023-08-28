@@ -57,22 +57,14 @@ export const AdminHeader = () => {
     }
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const handleLink = (e: React.MouseEvent<HTMLElement>) => {
-    // if (!isLoggedIn) {
-    //   e.preventDefault();
-    //   window.alert('접근 권한이 없습니다');
-    // }
-  };
-
   return (
     <S.header>
       <Link href="/admin">
-        <Image alt="avatar" src="/avatar.png" width={48} height={48} />
+        <Image priority alt="avatar" src="/avatar.png" width={48} height={48} />
       </Link>
       <S.links>
         {routes.map(route => (
-          <Link href={route.path} key={route.path} onClick={handleLink}>
+          <Link href={route.path} key={route.path}>
             <li>{route.label}</li>
           </Link>
         ))}

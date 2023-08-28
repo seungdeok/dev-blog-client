@@ -63,7 +63,7 @@ export default function AdminPostPage() {
 
   async function initRequest() {
     const postResponse = await postAPI.list();
-    setPostList([...postResponse]);
+    setPostList([...postResponse.data]);
   }
 
   const handleDelete =
