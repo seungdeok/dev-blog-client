@@ -1,7 +1,8 @@
+import { Category } from './Category';
+
 export interface Post {
   id: number;
-  cateogry_id: string;
-  categoryName: string;
+  category: Category;
   draft: string;
   tags: string;
   title: string;

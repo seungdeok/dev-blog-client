@@ -68,6 +68,7 @@ const S = {
     a {
       ${({ theme }) =>
         theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
+      margin: 8px 0;
     }
   `,
 };
@@ -83,7 +84,7 @@ export default function HomePage() {
     ]);
 
     setCategoryList([...categoryResponse]);
-    setPostList([...postResponse]);
+    setPostList([...postResponse.data]);
   }
 
   useEffect(() => {

@@ -49,7 +49,11 @@ const remove = async (id: number) => {
 const list = async (page = 1, categoryName = '') => {
   let url = `post?page=${page}`;
   if (categoryName) url += categoryName;
-  const response: Post[] = await client.get(url);
+  const response: {
+    data: Post[];
+    page: number;
+    total: number;
+  } = await client.get(url);
 
   return response;
 };
