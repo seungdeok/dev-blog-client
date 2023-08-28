@@ -137,8 +137,8 @@ export default function AdminPostWritePage({
       ]);
 
       setCategoryList([...categoryResponse]);
-      setCategoryId(postResponse.id);
-      setCategoryName(postResponse.categoryName);
+      setCategoryId(postResponse.category.id);
+      setCategoryName(postResponse.category.name);
       setContent(postResponse.content);
       setValue('draft', postResponse.draft);
       setValue('tags', postResponse.tags);
