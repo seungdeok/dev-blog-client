@@ -10,6 +10,7 @@ import StyledComponentsRegistry from '@/components/hocs/ReactQueryProvider';
 import ReactQueryProvider from '@/components/hocs/registry';
 import { usePathname } from 'next/navigation';
 import { AdminHeader } from '@/components/layouts/Header/AdminHeader';
+import { GTag } from './gtag';
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
   // eslint-disable-next-line global-require
@@ -33,6 +34,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="32x32" />
         <link rel="apple-touch-icon" href="/avatar.png" />
         <link rel="shortcut icon" href="/avatar.png" />
+        <GTag />
       </head>
       <body>
         <ReactQueryProvider>
