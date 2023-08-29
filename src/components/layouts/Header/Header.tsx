@@ -4,14 +4,10 @@ import Image from 'next/image';
 
 const S = {
   header: styled.header`
-    position: fixed;
-    top: 0;
-    left: 0;
     ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'space-between')}
     width: 100%;
     height: 80px;
     padding: 0 16px;
-    z-index: 1001;
 
     img {
       border-radius: 50%;
