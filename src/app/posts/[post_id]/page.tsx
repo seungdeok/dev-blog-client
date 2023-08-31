@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { postAPI } from '@/api/post';
 import { Post } from '@/types/Post';
 import { beforeDateFormat } from '@/utils/dateFormat';
-import { Utterances } from '@/components/Utterance';
+import { GiscusComment } from '@/components/GiscusComment';
 import { LoadingSkeleton } from '@/components/loading/LoadingSkeleton';
 
 const S = {
@@ -71,7 +71,7 @@ export default function PostPage({ params }: { params: { post_id: string } }) {
       <S.section>
         <Renderer data={postData.content} />
       </S.section>
-      <Utterances />
+      <GiscusComment />
     </S.container>
   );
 }
