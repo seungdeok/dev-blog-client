@@ -2,6 +2,7 @@
 
 import { postAPI } from '@/api/post';
 import { PostCard } from '@/components/card/PostCard';
+import { LoadingSkeleton } from '@/components/loading/LoadingSkeleton';
 import { Post } from '@/types/Post';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -53,10 +54,12 @@ export default function CategoryPage({
   params: { category_name: string };
 }) {
   const [postList, setPostList] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function initRequest() {
       const postResponse = await postAPI.list(1, params.category_name);
+      setLoading(false);
       setPostList([...postResponse.data]);
     }
 
@@ -68,17 +71,31 @@ export default function CategoryPage({
       <S.secondaryHeading>category</S.secondaryHeading>
       <S.heading>{params.category_name}</S.heading>
       <S.section>
-        <S.sectionColContent>
-          {postList.map(item => (
-            <Link key={item.id} href={`/posts/${item.id}`}>
-              <PostCard
-                title={item.title}
-                draft={item.draft}
-                modified_at={item.modified_at}
-              />
-            </Link>
-          ))}
-        </S.sectionColContent>
+        {loading ? (
+          <S.sectionColContent>
+            <LoadingSkeleton
+              count={5}
+              styles={{
+                padding: '16px',
+                margin: '8px 0',
+                width: '100%',
+                height: 88,
+              }}
+            />
+          </S.sectionColContent>
+        ) : (
+          <S.sectionColContent>
+            {postList.map(item => (
+              <Link key={item.id} href={`/posts/${item.id}`}>
+                <PostCard
+                  title={item.title}
+                  draft={item.draft}
+                  modified_at={item.modified_at}
+                />
+              </Link>
+            ))}
+          </S.sectionColContent>
+        )}
       </S.section>
     </S.container>
   );

@@ -7,6 +7,7 @@ import { postAPI } from '@/api/post';
 import { Post } from '@/types/Post';
 import { beforeDateFormat } from '@/utils/dateFormat';
 import { Utterances } from '@/components/Utterance';
+import { LoadingSkeleton } from '@/components/loading/LoadingSkeleton';
 
 const S = {
   container: styled.div`
@@ -45,8 +46,24 @@ export default function PostPage({ params }: { params: { post_id: string } }) {
   }, [params.post_id]);
 
   if (!postData) {
-    return <div>error</div>;
+    return (
+      <S.container>
+        <S.heading>
+          <LoadingSkeleton styles={{ width: 320, height: 32 }} />
+        </S.heading>
+        <S.datetime>
+          <LoadingSkeleton styles={{ width: 64, height: 14 }} />
+        </S.datetime>
+        <S.section>
+          <LoadingSkeleton styles={{ width: 320, height: 32 }} />
+          <LoadingSkeleton styles={{ width: 144, height: 14, marginTop: 24 }} />
+          <LoadingSkeleton styles={{ width: 64, height: 14, marginTop: 16 }} />
+          <LoadingSkeleton styles={{ width: 240, height: 14, marginTop: 16 }} />
+        </S.section>
+      </S.container>
+    );
   }
+
   return (
     <S.container>
       <S.heading>{postData.title}</S.heading>

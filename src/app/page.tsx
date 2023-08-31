@@ -10,6 +10,7 @@ import { PostCard } from '@/components/card/PostCard';
 import { Category } from '@/types/Category';
 import { postAPI } from '@/api/post';
 import { Post } from '@/types/Post';
+import { LoadingSkeleton } from '@/components/loading/LoadingSkeleton';
 
 const S = {
   container: styled.div`
@@ -74,6 +75,7 @@ const S = {
 };
 
 export default function HomePage() {
+  const [loading, setLoading] = useState(true);
   const [categoryList, setCategoryList] = useState<Category[]>([]);
   const [postList, setPostList] = useState<Post[]>([]);
 
@@ -83,6 +85,7 @@ export default function HomePage() {
       postAPI.list(),
     ]);
 
+    setLoading(false);
     setCategoryList([...categoryResponse]);
     setPostList([...postResponse.data]);
   }
@@ -122,29 +125,64 @@ export default function HomePage() {
       </S.intro>
       <S.section>
         <S.sectionHeading>Categories</S.sectionHeading>
-        <S.sectionRowContent>
-          {categoryList.map(item => {
-            return (
-              <Link key={item.name} href={`/categories/${item.name}`}>
-                <CategoryCard categoryName={item.name} />
-              </Link>
-            );
-          })}
-        </S.sectionRowContent>
+        {loading ? (
+          <S.sectionRowContent>
+            <LoadingSkeleton
+              styles={{
+                'margin-right': '12px',
+                'border-radius': '16px',
+                width: 82,
+                height: 34,
+              }}
+            />
+            <LoadingSkeleton
+              styles={{
+                'margin-right': '12px',
+                'border-radius': '16px',
+                width: 82,
+                height: 34,
+              }}
+            />
+          </S.sectionRowContent>
+        ) : (
+          <S.sectionRowContent>
+            {categoryList.map(item => {
+              return (
+                <Link key={item.name} href={`/categories/${item.name}`}>
+                  <CategoryCard categoryName={item.name} />
+                </Link>
+              );
+            })}
+          </S.sectionRowContent>
+        )}
       </S.section>
       <S.section>
         <S.sectionHeading>Latest Posts</S.sectionHeading>
-        <S.sectionColContent>
-          {postList.map(item => (
-            <Link key={item.id} href={`/posts/${item.id}`}>
-              <PostCard
-                title={item.title}
-                draft={item.draft}
-                modified_at={item.modified_at}
-              />
-            </Link>
-          ))}
-        </S.sectionColContent>
+        {loading ? (
+          <S.sectionColContent>
+            <LoadingSkeleton
+              count={5}
+              styles={{
+                padding: '16px',
+                margin: '8px 0',
+                width: '100%',
+                height: 88,
+              }}
+            />
+          </S.sectionColContent>
+        ) : (
+          <S.sectionColContent>
+            {postList.map(item => (
+              <Link key={item.id} href={`/posts/${item.id}`}>
+                <PostCard
+                  title={item.title}
+                  draft={item.draft}
+                  modified_at={item.modified_at}
+                />
+              </Link>
+            ))}
+          </S.sectionColContent>
+        )}
       </S.section>
     </S.container>
   );
