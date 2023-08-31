@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { postAPI } from '@/api/post';
 import { Post } from '@/types/Post';
 import { beforeDateFormat } from '@/utils/dateFormat';
+import { Utterances } from '@/components/Utterance';
 
 const S = {
   container: styled.div`
@@ -53,6 +54,7 @@ export default function PostPage({ params }: { params: { post_id: string } }) {
       <S.section>
         <Renderer data={postData.content} />
       </S.section>
+      <Utterances />
     </S.container>
   );
 }
