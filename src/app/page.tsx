@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
+import { useSearchParams } from 'next/navigation';
 import { categoryAPI } from '@/api/category';
 import { CategoryCard } from '@/components/card/CategoryCard';
 import { PostCard } from '@/components/card/PostCard';
@@ -11,26 +11,34 @@ import { Category } from '@/types/Category';
 import { postAPI } from '@/api/post';
 import { Post } from '@/types/Post';
 import { LoadingSkeleton } from '@/components/loading/LoadingSkeleton';
+import { Pagination } from '@/components/Pagination';
 
 const S = {
   container: styled.div`
-    ${({ theme }) =>
-      theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
+    ${({ theme }) => theme.MIXINS.flexBox('column', 'center', 'flex-start')};
     height: 100%;
+    width: 100%;
   `,
-  heading: styled.h1`
-    font-weight: bold;
-    font-size: 32px;
-  `,
-  intro: styled.div`
-    margin-top: 8px;
-    ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'space-between')};
-  `,
-  introDesc: styled.div`
-    margin-left: 12px;
-  `,
-  name: styled.div`
-    font-weight: bold;
+  banner: styled.section`
+    height: 400px;
+    width: 100%;
+    background-color: ${({ theme }) => theme.colors.primary};
+    ${({ theme }) => theme.MIXINS.flexBox('column', 'center', 'center')};
+    
+    h1, div {
+      color: ${({ theme }) => theme.colors.white};
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    div {
+      margin-top: 16px;
+      line-height: 1.6;
+    }
   `,
   tags: styled.div`
     margin-top: 4px;
@@ -48,9 +56,33 @@ const S = {
       }
     }
   `,
-  section: styled.section`
+  row: styled.div`
+    ${({ theme }) => theme.media.pc} {
+      ${({ theme }) => theme.MIXINS.flexBox('column', 'center', 'flex-start')};
+    }
     width: 100%;
+    ${({ theme }) => theme.MIXINS.flexBox('row', 'flex-start', 'center')};
+  `,
+  mainSection: styled.section`
+    width: 66.6%;
     margin-top: 48px;
+    ${({ theme }) =>
+      theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
+
+    ${({ theme }) => theme.media.pc} {
+      width: 100%;
+    }
+    padding: 0 16px;
+  `,
+  sideSection: styled.section`
+    width: 33.3%;
+    margin-top: 48px;
+    ${({ theme }) => theme.media.pc} {
+      margin-left: 0;
+      margin-bottom: 48px;
+      width: 100%;
+    }
+    padding: 0 16px;
     ${({ theme }) =>
       theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
   `,
@@ -59,8 +91,12 @@ const S = {
     font-size: 24px;
   `,
   sectionRowContent: styled.ul`
-    margin-top: 12px;
+    flex-wrap: wrap;
     ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'flex-start')};
+
+    li {
+      margin-top: 12px;
+    }
   `,
   sectionColContent: styled.ul`
     width: 100%;
@@ -72,118 +108,114 @@ const S = {
       margin: 8px 0;
     }
   `,
+  pagination: styled.div`
+    width: 100%;
+    ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'center')};
+    margin: 24px 0;
+  `,
 };
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [categoryList, setCategoryList] = useState<Category[]>([]);
   const [postList, setPostList] = useState<Post[]>([]);
+  const [total, setTotal] = useState(0);
 
-  async function initRequest() {
-    const [categoryResponse, postResponse] = await Promise.all([
-      categoryAPI.list(),
-      postAPI.list(),
-    ]);
-
-    setLoading(false);
-    setCategoryList([...categoryResponse]);
-    setPostList([...postResponse.data]);
-  }
+  const searchParams = useSearchParams();
+  const page = searchParams.get('page');
+  const currentPage = page ? Number(page) : 1;
+  const maxPage = Math.ceil(total / 10);
 
   useEffect(() => {
+    async function initRequest() {
+      const [categoryResponse, postResponse] = await Promise.all([
+        categoryAPI.list(),
+        postAPI.list(currentPage),
+      ]);
+
+      setLoading(false);
+      setCategoryList([...categoryResponse]);
+      setPostList([...postResponse.data]);
+      setTotal(postResponse.total);
+    }
     initRequest();
-  }, []);
+  }, [currentPage]);
 
   return (
     <S.container>
-      <S.heading>docs.SEUNGDEOK.com</S.heading>
-      <S.intro>
-        <Image alt="profile" src="/profile.png" width={80} height={80} />
-        <S.introDesc>
-          <S.name>I`m @seungdeok</S.name>
-          <S.tags>
-            Frontend Engineer with an focusing on Javascript, Testing,
-            Automation, Metoring
-          </S.tags>
-          <S.links>
-            <Link href="https://github.com/seungdeok">
-              <svg
-                className="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </Link>
-          </S.links>
-        </S.introDesc>
-      </S.intro>
-      <S.section>
-        <S.sectionHeading>Categories</S.sectionHeading>
-        {loading ? (
-          <S.sectionRowContent>
-            <LoadingSkeleton
-              styles={{
-                'margin-right': '12px',
-                'border-radius': '16px',
-                width: 82,
-                height: 34,
-              }}
-            />
-            <LoadingSkeleton
-              styles={{
-                'margin-right': '12px',
-                'border-radius': '16px',
-                width: 82,
-                height: 34,
-              }}
-            />
-          </S.sectionRowContent>
-        ) : (
-          <S.sectionRowContent>
-            {categoryList.map(item => {
-              return (
-                <Link key={item.name} href={`/categories/${item.name}`}>
-                  <CategoryCard categoryName={item.name} />
+      <S.banner>
+        <h1>Blog</h1>
+        <div>
+          Frontend Engineer with an focusing on Javascript, Testing, Automation,
+          Metoring
+        </div>
+      </S.banner>
+      <S.row>
+        <S.mainSection>
+          <S.sectionHeading>Latest Posts</S.sectionHeading>
+          {loading ? (
+            <S.sectionColContent>
+              <LoadingSkeleton
+                count={5}
+                styles={{
+                  padding: '16px',
+                  margin: '8px 0',
+                  width: '100%',
+                  height: 88,
+                }}
+              />
+            </S.sectionColContent>
+          ) : (
+            <S.sectionColContent>
+              {postList.map(item => (
+                <Link key={item.id} href={`/posts/${item.id}`}>
+                  <PostCard
+                    title={item.title}
+                    draft={item.draft}
+                    modified_at={item.modified_at}
+                  />
                 </Link>
-              );
-            })}
-          </S.sectionRowContent>
-        )}
-      </S.section>
-      <S.section>
-        <S.sectionHeading>Latest Posts</S.sectionHeading>
-        {loading ? (
-          <S.sectionColContent>
-            <LoadingSkeleton
-              count={5}
-              styles={{
-                padding: '16px',
-                margin: '8px 0',
-                width: '100%',
-                height: 88,
-              }}
-            />
-          </S.sectionColContent>
-        ) : (
-          <S.sectionColContent>
-            {postList.map(item => (
-              <Link key={item.id} href={`/posts/${item.id}`}>
-                <PostCard
-                  title={item.title}
-                  draft={item.draft}
-                  modified_at={item.modified_at}
-                />
-              </Link>
-            ))}
-          </S.sectionColContent>
-        )}
-      </S.section>
+              ))}
+            </S.sectionColContent>
+          )}
+          <S.pagination>
+            <Pagination maxPage={maxPage} currentPage={currentPage} />
+          </S.pagination>
+        </S.mainSection>
+        <S.sideSection>
+          <S.sectionHeading>Tags</S.sectionHeading>
+          {loading ? (
+            <S.sectionRowContent>
+              <LoadingSkeleton
+                styles={{
+                  'margin-right': '12px',
+                  'border-radius': '16px',
+                  width: 82,
+                  height: 34,
+                }}
+              />
+              <LoadingSkeleton
+                styles={{
+                  'margin-right': '12px',
+                  'border-radius': '16px',
+                  width: 82,
+                  height: 34,
+                }}
+              />
+            </S.sectionRowContent>
+          ) : (
+            <S.sectionRowContent>
+              {categoryList.map(item => {
+                return (
+                  <Link key={item.name} href={`/categories/${item.name}`}>
+                    <CategoryCard categoryName={item.name} />
+                  </Link>
+                );
+              })}
+            </S.sectionRowContent>
+          )}
+        </S.sideSection>
+      </S.row>
     </S.container>
   );
 }

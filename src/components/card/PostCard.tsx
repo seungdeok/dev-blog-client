@@ -18,9 +18,7 @@ const S = {
     
     &:hover {
       transition: all 0.2s ease-out;
-      box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
-      top: -4px;
-      border: 1px solid ${({ theme }) => theme.colors.gray.eaeaea};
+      border: 1px solid ${({ theme }) => theme.colors.gray['747474']};
       background-color: ${({ theme }) => theme.colors.white};
     }
   `,
