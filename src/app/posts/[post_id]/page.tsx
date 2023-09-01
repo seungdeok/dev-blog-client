@@ -8,6 +8,8 @@ import { Post } from '@/types/Post';
 import { beforeDateFormat } from '@/utils/dateFormat';
 import { GiscusComment } from '@/components/GiscusComment';
 import { LoadingSkeleton } from '@/components/loading/LoadingSkeleton';
+import { CategoryCard } from '@/components/card/CategoryCard';
+import Link from 'next/link';
 
 const S = {
   container: styled.div`
@@ -15,6 +17,7 @@ const S = {
       theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
     height: 100%;
     width: 100%;
+    padding: 20px; 16px;
   `,
   heading: styled.h1`
     font-weight: bold;
@@ -31,6 +34,16 @@ const S = {
   section: styled.section`
     width: 100%;
     margin-top: 48px;
+  `,
+  tags: styled.ul`
+    border-top: 1px solid #eaecef;
+    padding-top: 16px;
+    flex-wrap: wrap;
+    ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'flex-start')};
+
+    li {
+      margin-top: 12px;
+    }
   `,
 };
 
@@ -70,6 +83,16 @@ export default function PostPage({ params }: { params: { post_id: string } }) {
       <S.datetime>{beforeDateFormat(postData.modified_at)}</S.datetime>
       <S.section>
         <Renderer data={postData.content} />
+        <S.tags>
+          {postData.tags.split('#').map(tag => {
+            if (!tag) return null;
+            return (
+              <Link key={tag} href={`/categories/${tag}`}>
+                <CategoryCard categoryName={`#${tag}`} />
+              </Link>
+            );
+          })}
+        </S.tags>
       </S.section>
       <GiscusComment />
     </S.container>
