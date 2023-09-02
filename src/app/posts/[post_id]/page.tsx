@@ -1,15 +1,15 @@
 'use client';
 
+import Link from 'next/link';
 import { styled } from 'styled-components';
-import { Renderer } from '@/components/markdown/Renderer';
 import { useEffect, useState } from 'react';
+import { Renderer } from '@/components/markdown/Renderer';
 import { postAPI } from '@/api/post';
 import { Post } from '@/types/Post';
 import { beforeDateFormat } from '@/utils/dateFormat';
 import { GiscusComment } from '@/components/GiscusComment';
 import { LoadingSkeleton } from '@/components/loading/LoadingSkeleton';
 import { CategoryCard } from '@/components/card/CategoryCard';
-import Link from 'next/link';
 
 const S = {
   container: styled.div`
@@ -47,16 +47,16 @@ const S = {
   `,
 };
 
-export default function PostPage({ params }: { params: { post_id: string } }) {
+export default function PostPage({ params }: { params?: { post_id: string } }) {
   const [postData, setPostData] = useState<Post>();
 
   useEffect(() => {
     async function initRequest() {
-      const postResponse = await postAPI.show(Number(params.post_id));
+      const postResponse = await postAPI.show(Number(params!.post_id));
       setPostData(postResponse);
     }
     initRequest();
-  }, [params.post_id]);
+  }, [params]);
 
   if (!postData) {
     return (
