@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/jest-globals';
-import { server } from './mocks/server';
+
+const { server } = require('./src/mocks/server');
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());

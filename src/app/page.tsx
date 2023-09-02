@@ -188,16 +188,18 @@ export default function HomePage() {
             <S.sectionRowContent>
               <LoadingSkeleton
                 styles={{
-                  'margin-right': '12px',
-                  'border-radius': '16px',
+                  marginTop: 12,
+                  marginRight: 12,
+                  borderRadiux: 16,
                   width: 82,
                   height: 34,
                 }}
               />
               <LoadingSkeleton
                 styles={{
-                  'margin-right': '12px',
-                  'border-radius': '16px',
+                  marginTop: 12,
+                  marginRight: 12,
+                  borderRadiux: 16,
                   width: 82,
                   height: 34,
                 }}

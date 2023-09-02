@@ -1,49 +1,51 @@
+/* eslint-disable no-unused-vars */
+import axios from 'axios';
 import { getStorageItem } from '@/utils/storage';
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
-interface FetchOption {
-  method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
-  headers: { [key: string]: string };
-  body?: string;
+const instance = axios.create({
+  baseURL,
+  headers: {
+    Authorization: `Bearer ${getStorageItem('accessToken')}`,
+    'Content-Type': 'application/json',
+  },
+});
+
+export interface FetchInstance {
+  get: <Response = unknown>(url: string) => Promise<Response>;
+  post: <Response = unknown>(
+    url: string,
+    body: { [key: string]: any }
+  ) => Promise<Response>;
+  patch: <Response = unknown>(
+    url: string,
+    body: { [key: string]: any }
+  ) => Promise<Response>;
+  delete: <Response = unknown>(url: string) => Promise<Response>;
 }
 
-async function fetchAPI(
-  url: string,
-  method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
-  body?: { [key: string]: any }
-) {
-  const options: FetchOption = {
-    method,
-    headers: {
-      Authorization: `Bearer ${getStorageItem('accessToken')}`,
-      'Content-Type': 'application/json',
-    },
-  };
-
-  if (method === 'POST' || method === 'PATCH') {
-    options.body = JSON.stringify(body!);
-  }
-
-  const res = await fetch(url, options);
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-
-  const contentType = res.headers.get('content-type');
-  const jsonParseAvailable = contentType && /json/.test(contentType);
-
-  const data = jsonParseAvailable ? await res.json() : await res.text();
-
-  return data;
-}
-
-export const client = {
-  get: (url: string) => fetchAPI(`${baseURL}/${url}`, 'GET'),
-  post: (url: string, body: { [key: string]: any }) =>
-    fetchAPI(`${baseURL}/${url}`, 'POST', body),
-  patch: (url: string, body: { [key: string]: any }) =>
-    fetchAPI(`${baseURL}/${url}`, 'PATCH', body),
-  delete: (url: string) => fetchAPI(`${baseURL}/${url}`, 'DELETE'),
+export const client: FetchInstance = {
+  get: async function fetch<Response = unknown>(url: string) {
+    const res = await instance.get<Response>(url);
+    return res.data;
+  },
+  post: async function fetch<Response = unknown>(
+    url: string,
+    body: { [key: string]: any }
+  ) {
+    const res = await instance.post<Response>(url, body);
+    return res.data;
+  },
+  patch: async function fetch<Response = unknown>(
+    url: string,
+    body: { [key: string]: any }
+  ) {
+    const res = await instance.patch<Response>(url, body);
+    return res.data;
+  },
+  delete: async function fetch<Response = unknown>(url: string) {
+    const res = await instance.delete<Response>(url);
+    return res.data;
+  },
 };

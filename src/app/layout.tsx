@@ -1,6 +1,7 @@
 'use client';
 
 import { ThemeProvider } from 'styled-components';
+import { usePathname } from 'next/navigation';
 import { GlobalStyles } from '@/styles/global';
 import theme from '@/styles/theme';
 import { Header } from '@/components/layouts/Header/Header';
@@ -8,11 +9,10 @@ import { Main } from '@/components/layouts/Main/Main';
 import { Footer } from '@/components/layouts/Footer/Footer';
 import StyledComponentsRegistry from '@/components/hocs/ReactQueryProvider';
 import ReactQueryProvider from '@/components/hocs/registry';
-import { usePathname } from 'next/navigation';
 import { AdminHeader } from '@/components/layouts/Header/AdminHeader';
 import { GTag } from './gtag';
 
-if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
+if (process.env.NODE_ENV === 'development') {
   // eslint-disable-next-line global-require
   require('../mocks');
 }
