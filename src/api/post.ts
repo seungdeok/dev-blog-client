@@ -4,14 +4,12 @@ import { Post } from '@/types/Post';
 import { client } from './client';
 
 const create = async (
-  category_id: number,
   draft: string,
-  tags: string,
+  tags: string[],
   title: string,
   content: string
 ) => {
   const response: Post = await client.post('post', {
-    category_id,
     draft,
     tags,
     title,
@@ -23,14 +21,12 @@ const create = async (
 
 const update = async (
   id: number,
-  category_id: number,
   draft: string,
-  tags: string,
+  tags: string[],
   title: string,
   content: string
 ) => {
   const response: Post = await client.patch(`post/${id}`, {
-    category_id,
     draft,
     tags,
     title,
@@ -46,9 +42,9 @@ const remove = async (id: number) => {
   return response;
 };
 
-const list = async (page = 1, categoryName = '') => {
+const list = async (page = 1, tagName = '') => {
   let url = `post?page=${page}`;
-  if (categoryName) url += categoryName;
+  if (tagName) url += `&tagName=${tagName}`;
   const response: {
     data: Post[];
     page: number;

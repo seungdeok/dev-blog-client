@@ -66,13 +66,15 @@
           "**/stories/**",
           "**/*.spec.tsx",
           "**/jest.*.js",
-          "**/mocks/*.ts"
+          "**/mocks/*.ts",
+          "**/mocks/*/*.ts"
         ],
         "optionalDependencies": false
       }
     ],
     "react/no-children-prop": 0,
-    "jsx-a11y/label-has-associated-control": 0
+    "jsx-a11y/label-has-associated-control": 0,
+    "no-alert": 0
   },
   "globals": {
     "React": "writable"

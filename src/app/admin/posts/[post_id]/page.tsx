@@ -1,13 +1,13 @@
+/* eslint-disable no-alert */
+
 'use client';
 
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { styled } from 'styled-components';
-import { categoryAPI } from '@/api/category';
 import { postAPI } from '@/api/post';
 import WithAuth from '@/components/hocs/WithAuth';
 import { Editor } from '@/components/markdown/Editor';
-import { Category } from '@/types/Category';
 
 const S = {
   container: styled.div`
@@ -92,9 +92,6 @@ export default function AdminPostWritePage({
   params: { post_id: string };
 }) {
   const [content, setContent] = useState('**Hello world!!!**');
-  const [categoryId, setCategoryId] = useState(-1);
-  const [categoryName, setCategoryName] = useState('');
-  const [categoryList, setCategoryList] = useState<Category[]>([]);
 
   const defaultValues = {
     title: '',
@@ -111,17 +108,12 @@ export default function AdminPostWritePage({
     defaultValues,
   });
 
-  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setCategoryId(Number(e.target.value));
-  };
-
   const onSubmit = async (data: FormProps) => {
     if (window.confirm('수정하시겠습니까?')) {
       await postAPI.update(
         Number(params.post_id),
-        categoryId,
         data.draft,
-        data.tags,
+        data.tags.split(','),
         data.title,
         content
       );
@@ -131,17 +123,10 @@ export default function AdminPostWritePage({
 
   useEffect(() => {
     async function initRequest() {
-      const [categoryResponse, postResponse] = await Promise.all([
-        categoryAPI.list(),
-        postAPI.show(Number(params.post_id)),
-      ]);
-
-      setCategoryList([...categoryResponse]);
-      setCategoryId(postResponse.category.id);
-      setCategoryName(postResponse.category.name);
+      const postResponse = await postAPI.show(Number(params.post_id));
       setContent(postResponse.content);
       setValue('draft', postResponse.draft);
-      setValue('tags', postResponse.tags);
+      setValue('tags', postResponse.tags.map(tag => tag.name).join(','));
       setValue('title', postResponse.title);
     }
     initRequest();
@@ -153,16 +138,6 @@ export default function AdminPostWritePage({
         <S.heading>포스트 작성</S.heading>
         <S.section>
           <S.form onSubmit={handleSubmit(onSubmit)}>
-            <S.select value={categoryName} onChange={handleSelectChange}>
-              <option disabled selected>
-                카테고리 선택
-              </option>
-              {categoryList.map(item => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </S.select>
             <S.input>
               <input
                 type="text"
