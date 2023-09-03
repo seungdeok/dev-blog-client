@@ -1,8 +1,8 @@
-import { Category } from '@/types/Category';
+import { Tag } from '@/types/Tag';
 import { client } from './client';
 
 const create = async (name: string) => {
-  const response: Category = await client.post('category', {
+  const response: Tag = await client.post('tag', {
     name,
   });
 
@@ -10,7 +10,7 @@ const create = async (name: string) => {
 };
 
 const update = async (id: number, name: string) => {
-  const response: Category = await client.patch(`category/${id}`, {
+  const response: Tag = await client.patch(`tag/${id}`, {
     name,
   });
 
@@ -18,18 +18,18 @@ const update = async (id: number, name: string) => {
 };
 
 const remove = async (id: number) => {
-  const response: Category = await client.delete(`category/${id}`);
+  const response: Tag = await client.delete(`tag/${id}`);
 
   return response;
 };
 
 const list = async () => {
-  const response: Category[] = await client.get('category');
+  const response: Tag[] = await client.get('tag');
 
   return response;
 };
 
-export const categoryAPI = {
+export const tagAPI = {
   create,
   update,
   remove,

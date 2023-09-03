@@ -1,10 +1,9 @@
-import { Category } from './Category';
+import { Tag } from './Tag';
 
 export interface Post {
   id: number;
-  category: Category;
+  tags: Tag[];
   draft: string;
-  tags: string;
   title: string;
   content: string;
   modified_at: Date;

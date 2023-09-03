@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 interface Props {
-  categoryName: string;
+  tagName: string;
 }
 
 const S = {
@@ -23,6 +23,6 @@ const S = {
   `,
 };
 
-export function CategoryCard({ categoryName }: Props) {
-  return <S.cardContainer>{categoryName}</S.cardContainer>;
+export function TagCard({ tagName }: Props) {
+  return <S.cardContainer>{`#${tagName}`}</S.cardContainer>;
 }

@@ -1,8 +1,7 @@
-import { cleanup, screen } from '@testing-library/react';
+import { cleanup, screen, waitFor } from '@testing-library/react';
 import HomePage from '@/app/page';
 import { render } from '@/utils/render';
-import { server } from '@/mocks/server';
-import { handlers } from '@/mocks/handlers';
+import TagPage from '@/app/tags/[tag_name]/page';
 
 jest.mock('next/navigation', () => {
   return {
@@ -10,37 +9,43 @@ jest.mock('next/navigation', () => {
       push: jest.fn(),
     })),
     useSearchParams: jest.fn(() => ({
-      get: jest.fn(),
+      get: jest.fn(() => '1'),
     })),
     usePathname: jest.fn(),
     useServerInsertedHTML: jest.fn(),
   };
 });
 
-describe('', () => {
+describe('UI Testing', () => {
   beforeAll(() => {
     jest.spyOn(console, 'warn').mockImplementation(() => null);
   });
   afterAll(cleanup);
 
   test('Index Page Redering', async () => {
-    server.use(...handlers);
     render(<HomePage />);
+    await waitFor(() => {
+      expect(screen.queryAllByText(/title/).length).toBe(10);
+    });
 
-    await screen.findByText(/Blog/);
-    await screen.findByText(
-      /Frontend Engineer with an focusing on Javascript, Testing, Automation, Metoring/
+    expect(screen.queryByText(/#frontend/)).toBeTruthy();
+    expect(screen.queryByText(/#backend/)).toBeTruthy();
+  });
+
+  test('Post 상세', async () => {});
+
+  test('Tag Posts 목록', async () => {
+    render(
+      <TagPage
+        params={{
+          tag_name: 'frontend',
+        }}
+      />
     );
 
-    const data = await screen.findAllByRole('listitem');
-    expect(data.length).toBe(14);
-  });
-
-  test('Post 상세', async () => {
-    server.use(...handlers);
-  });
-
-  test('Tag Posts 목록', () => {
-    server.use(...handlers);
+    await waitFor(() => {
+      expect(screen.queryByText(/frontend/)).toBeTruthy();
+      expect(screen.queryAllByText(/title/).length).toBe(10);
+    });
   });
 });

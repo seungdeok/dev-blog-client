@@ -1,14 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { styled } from 'styled-components';
-import { categoryAPI } from '@/api/category';
+import { tagAPI } from '@/api/tag';
 import { postAPI } from '@/api/post';
 import WithAuth from '@/components/hocs/WithAuth';
 import { Editor } from '@/components/markdown/Editor';
-import { Category } from '@/types/Category';
+import { Tag } from '@/types/Tag';
 
 const S = {
   container: styled.div`
@@ -90,8 +90,7 @@ interface FormProps {
 export default function AdminPostWritePage() {
   const router = useRouter();
   const [content, setContent] = useState('**Hello world!!!**');
-  const [categoryId, setCategoryId] = useState(-1);
-  const [categoryList, setCategoryList] = useState<Category[]>([]);
+  const [tagList, setTagList] = useState<Tag[]>([]);
 
   const defaultValues = {
     title: '',
@@ -108,20 +107,16 @@ export default function AdminPostWritePage() {
   });
 
   async function initRequest() {
-    const categoryResponse = await categoryAPI.list();
-    setCategoryList([...categoryResponse]);
+    const categoryResponse = await tagAPI.list();
+    setTagList([...categoryResponse]);
   }
 
-  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setCategoryId(Number(e.target.value));
-  };
-
   const onSubmit = async (data: FormProps) => {
+    console.log(tagList);
     if (window.confirm('게시하시겠습니까?')) {
       await postAPI.create(
-        categoryId,
         data.draft,
-        data.tags,
+        data.tags.split(''),
         data.title,
         content
       );
@@ -139,16 +134,6 @@ export default function AdminPostWritePage() {
         <S.heading>포스트 작성</S.heading>
         <S.section>
           <S.form onSubmit={handleSubmit(onSubmit)}>
-            <S.select onChange={handleSelectChange}>
-              <option disabled selected>
-                카테고리 선택
-              </option>
-              {categoryList.map(item => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </S.select>
             <S.input>
               <input
                 type="text"
