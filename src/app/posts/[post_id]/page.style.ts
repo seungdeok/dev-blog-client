@@ -1,10 +1,25 @@
 import { styled } from 'styled-components';
 
 export const container = styled.div`
+  ${({ theme }) => theme.MIXINS.flexBox('column', 'center', 'flex-start')};
+  height: 100%;
+  width: 100%;
+  position: relative;
+`;
+
+export const contentWrap = styled.div`
   ${({ theme }) => theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
   height: 100%;
   width: 100%;
   padding: 20px; 16px;
+  width: 768px;
+
+  ${({ theme }) => theme.media.pc} {
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 100%;
+  }
 `;
 
 export const heading = styled.h1`

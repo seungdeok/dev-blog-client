@@ -11,6 +11,25 @@ import { LoadingSkeleton } from '@/components/loading/LoadingSkeleton';
 import { TagCard } from '@/components/card/TagCard';
 import * as S from './page.style';
 
+export function PostLoadingPage() {
+  return (
+    <S.container>
+      <S.heading>
+        <LoadingSkeleton styles={{ width: 320, height: 32 }} />
+      </S.heading>
+      <S.datetime>
+        <LoadingSkeleton styles={{ width: 64, height: 14 }} />
+      </S.datetime>
+      <S.section>
+        <LoadingSkeleton styles={{ width: 320, height: 32 }} />
+        <LoadingSkeleton styles={{ width: 144, height: 14, marginTop: 24 }} />
+        <LoadingSkeleton styles={{ width: 64, height: 14, marginTop: 16 }} />
+        <LoadingSkeleton styles={{ width: 240, height: 14, marginTop: 16 }} />
+      </S.section>
+    </S.container>
+  );
+}
+
 export default function PostPage({ params }: { params?: { post_id: string } }) {
   const [postData, setPostData] = useState<Post>();
 
@@ -23,42 +42,29 @@ export default function PostPage({ params }: { params?: { post_id: string } }) {
   }, [params]);
 
   if (!postData) {
-    return (
-      <S.container>
-        <S.heading>
-          <LoadingSkeleton styles={{ width: 320, height: 32 }} />
-        </S.heading>
-        <S.datetime>
-          <LoadingSkeleton styles={{ width: 64, height: 14 }} />
-        </S.datetime>
-        <S.section>
-          <LoadingSkeleton styles={{ width: 320, height: 32 }} />
-          <LoadingSkeleton styles={{ width: 144, height: 14, marginTop: 24 }} />
-          <LoadingSkeleton styles={{ width: 64, height: 14, marginTop: 16 }} />
-          <LoadingSkeleton styles={{ width: 240, height: 14, marginTop: 16 }} />
-        </S.section>
-      </S.container>
-    );
+    return <PostLoadingPage />;
   }
 
   return (
     <S.container>
-      <S.heading>{postData.title}</S.heading>
-      <S.datetime>{beforeDateFormat(postData.modified_at)}</S.datetime>
-      <S.section>
-        <Renderer data={postData.content} />
-        <S.tags>
-          {postData.tags.map(tag => {
-            if (!tag) return null;
-            return (
-              <Link key={tag.name} href={`/tags/${tag.name}`}>
-                <TagCard tagName={tag.name} />
-              </Link>
-            );
-          })}
-        </S.tags>
-      </S.section>
-      <GiscusComment />
+      <S.contentWrap>
+        <S.heading>{postData.title}</S.heading>
+        <S.datetime>{beforeDateFormat(postData.modified_at)}</S.datetime>
+        <S.section>
+          <Renderer data={postData.content} />
+          <S.tags>
+            {postData.tags.map(tag => {
+              if (!tag) return null;
+              return (
+                <Link key={tag.name} href={`/tags/${tag.name}`}>
+                  <TagCard tagName={tag.name} />
+                </Link>
+              );
+            })}
+          </S.tags>
+        </S.section>
+        <GiscusComment />
+      </S.contentWrap>
     </S.container>
   );
 }
