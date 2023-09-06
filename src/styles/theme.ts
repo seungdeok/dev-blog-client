@@ -27,6 +27,7 @@ const theme: DefaultTheme = {
     text: {
       222222: '#222222',
       444444: '#444444',
+      888888: '#888888',
     },
     primary: '#006aff',
     secondary: '#ebedf0',

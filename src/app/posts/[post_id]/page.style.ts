@@ -4,7 +4,6 @@ export const container = styled.div`
   ${({ theme }) => theme.MIXINS.flexBox('column', 'center', 'flex-start')};
   height: 100%;
   width: 100%;
-  position: relative;
 `;
 
 export const contentWrap = styled.div`
@@ -13,6 +12,7 @@ export const contentWrap = styled.div`
   width: 100%;
   padding: 20px; 16px;
   width: 768px;
+  position: relative;
 
   ${({ theme }) => theme.media.pc} {
   }
@@ -28,12 +28,15 @@ export const heading = styled.h1`
   color: ${({ theme }) => theme.colors.text['222222']};
 `;
 
+export const subHeadingWrap = styled.div`
+  width: 100%;
+  ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'space-between')};
+  margin-top: 12px;
+`;
+
 export const datetime = styled.p`
   font-size: 14px;
-  width: 100%;
-  text-align: right;
   color: ${({ theme }) => theme.colors.gray['747474']};
-  margin-top: 12px;
 `;
 
 export const section = styled.section`
@@ -50,5 +53,64 @@ export const tags = styled.ul`
 
   li {
     margin-top: 12px;
+  }
+`;
+
+export const actionWrap = styled.ul`
+  ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'flex-start')};
+
+  li {
+    margin-left: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 18px;
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.primary};
+    opacity: 0.5;
+    ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'center')};
+
+    &:hover {
+      opacity: 1;
+      transition: .3s;
+      transform: translateY(-4px);
+    }
+
+    svg {
+
+    }
+  }
+`;
+
+export const sideWrap = styled.div`
+  left: 100%;
+  position: absolute;
+`;
+
+export const scrollspyWrap = styled.ul`
+  position: fixed;
+  top: 72px;
+  width: 240px;
+  padding-left: 16px;
+  border-left: 1px solid ${({ theme }) => theme.colors.gray.eaeaea};
+  
+  li {
+    margin-top: 6px;
+    line-height: 2;
+    color: ${({ theme }) => theme.colors.text['888888']};
+    cursor: pointer;
+    font-size: 14px;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.text['222222']};
+      transition: .3s;
+    }
+  }
+`;
+
+export const listWrap = styled.ul`
+  ${({ theme }) => theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
+
+  ${({ theme }) => theme.media.pc} {
+    display: none;
   }
 `;
