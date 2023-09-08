@@ -13,25 +13,6 @@ import { Post } from '@/types/Post';
 import { beforeDateFormat } from '@/utils/dateFormat';
 import * as S from './page.style';
 
-export function PostLoadingPage() {
-  return (
-    <S.container>
-      <S.heading>
-        <LoadingSkeleton styles={{ width: 320, height: 32 }} />
-      </S.heading>
-      <S.datetime>
-        <LoadingSkeleton styles={{ width: 64, height: 14 }} />
-      </S.datetime>
-      <S.section>
-        <LoadingSkeleton styles={{ width: 320, height: 32 }} />
-        <LoadingSkeleton styles={{ width: 144, height: 14, marginTop: 24 }} />
-        <LoadingSkeleton styles={{ width: 64, height: 14, marginTop: 16 }} />
-        <LoadingSkeleton styles={{ width: 240, height: 14, marginTop: 16 }} />
-      </S.section>
-    </S.container>
-  );
-}
-
 export default function PostPage({ params }: { params?: { post_id: string } }) {
   const [postData, setPostData] = useState<Post>();
 
@@ -44,7 +25,22 @@ export default function PostPage({ params }: { params?: { post_id: string } }) {
   }, [params]);
 
   if (!postData) {
-    return <PostLoadingPage />;
+    return (
+      <S.container>
+        <S.heading>
+          <LoadingSkeleton styles={{ width: 320, height: 32 }} />
+        </S.heading>
+        <S.datetime>
+          <LoadingSkeleton styles={{ width: 64, height: 14 }} />
+        </S.datetime>
+        <S.section>
+          <LoadingSkeleton styles={{ width: 320, height: 32 }} />
+          <LoadingSkeleton styles={{ width: 144, height: 14, marginTop: 24 }} />
+          <LoadingSkeleton styles={{ width: 64, height: 14, marginTop: 16 }} />
+          <LoadingSkeleton styles={{ width: 240, height: 14, marginTop: 16 }} />
+        </S.section>
+      </S.container>
+    );
   }
 
   return (
