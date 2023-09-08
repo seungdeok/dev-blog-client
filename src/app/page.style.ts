@@ -11,6 +11,7 @@ export const banner = styled.section`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.primary};
   ${({ theme }) => theme.MIXINS.flexBox('column', 'center', 'center')};
+  position: relative;
 
   h1, div {
     color: ${({ theme }) => theme.colors.white};
@@ -25,6 +26,39 @@ export const banner = styled.section`
   div {
     margin-top: 16px;
     line-height: 1.6;
+    min-width:11px;
+    white-space: nowrap;
+    margin: 0;
+    position: absolute;
+    color: transparent;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    &::before {
+      content: "Frontend Engineer with an focusing on Javascript, Testing, Automation, Metoring";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      color: ${({ theme }) => theme.colors.white};
+      overflow: hidden;
+      border-right: 1px solid ${({ theme }) => theme.colors.white};
+      animation: typing 5s steps(31) infinite;
+    }
+
+    @keyframes typing{
+      0% {
+        width: 0%;
+      }
+      50% {
+        width: 100%;
+      }
+      100% {
+        width: 0%;
+      }
+    }
   }
 `;
 

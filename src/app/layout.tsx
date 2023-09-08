@@ -11,11 +11,12 @@ import StyledComponentsRegistry from '@/components/hocs/ReactQueryProvider';
 import ReactQueryProvider from '@/components/hocs/registry';
 import { AdminHeader } from '@/components/layouts/Header/AdminHeader';
 import { GTag } from './gtag';
+import '@uiw/react-md-editor/markdown-editor.css';
 
-if (process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line global-require
-  require('../mocks');
-}
+// if (process.env.NODE_ENV === 'development') {
+//   // eslint-disable-next-line global-require
+//   require('../mocks');
+// }
 
 export default function RootLayout({
   children,

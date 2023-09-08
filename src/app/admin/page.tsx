@@ -23,6 +23,7 @@ const S = {
     margin-top: 48px;
     ${({ theme }) =>
       theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
+    padding: 20px;
   `,
   sectionColContent: styled.ul`
     width: 100%;

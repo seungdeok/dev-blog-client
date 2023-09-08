@@ -36,10 +36,6 @@ const S = {
 
 export const routes = [
   {
-    path: '/admin/categories',
-    label: '카테고리',
-  },
-  {
     path: '/admin/posts',
     label: '포스트',
   },
