@@ -34,6 +34,7 @@ const S = {
   form: styled.form`
     width: 100%;
     margin-top: 12px;
+    padding: 20px;
     
     ${({ theme }) =>
       theme.MIXINS.flexBox('column', 'flex-start', 'flex-start')};
