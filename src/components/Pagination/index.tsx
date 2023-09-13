@@ -1,46 +1,10 @@
-import { styled } from 'styled-components';
 import { useRouter } from 'next/navigation';
+import * as S from './Pagination.style';
 
 interface Props {
   maxPage: number;
   currentPage: number;
 }
-
-const S = {
-  paginationWrap: styled.div`
-    ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'center')};
-
-    a, button {
-      ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'center')};
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      font-weight: bold;
-      margin: 0 4px;
-    }
-
-    a {
-      border-radius: 50%;
-    }
-
-    button {
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  `,
-  active: styled.a`
-    background-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.white};
-  `,
-  link: styled.a`
-    color: ${({ theme }) => theme.colors.text['222222']};
-    &:hover {
-      background-color: ${({ theme }) => theme.colors.primary};
-      color: ${({ theme }) => theme.colors.white};
-    }
-  `,
-};
 
 export const Pagination = ({ maxPage, currentPage }: Props) => {
   const router = useRouter();

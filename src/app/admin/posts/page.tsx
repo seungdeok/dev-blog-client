@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { AdminPostCard } from '@/components/card/AdminPostCard';
+import { AdminPostCard } from '@/components/card/PostCard/AdminPostCard';
 import { Post } from '@/types/Post';
 import { useEffect, useState } from 'react';
 import { postAPI } from '@/api/post';

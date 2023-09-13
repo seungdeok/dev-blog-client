@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Renderer } from '@/components/markdown/Renderer';
 import { GiscusComment } from '@/components/GiscusComment';
 import { LoadingSkeleton } from '@/components/loading/LoadingSkeleton';
-import { TagCard } from '@/components/card/TagCard';
+import { TagCard } from '@/components/card/TagCard/TagCard';
 import { Share } from '@/components/share/Share';
 import { ScrollSpy } from '@/components/scrollspy/ScrollSpy';
 import { postAPI } from '@/api/post';

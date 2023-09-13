@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { postAPI } from '@/api/post';
-import { PostCard } from '@/components/card/PostCard';
+import { PostCard } from '@/components/card/PostCard/PostCard';
 import { LoadingSkeleton } from '@/components/loading/LoadingSkeleton';
 import { Post } from '@/types/Post';
 import * as S from './page.style';

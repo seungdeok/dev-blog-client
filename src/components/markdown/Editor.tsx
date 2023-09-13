@@ -2,9 +2,10 @@
 
 'use client';
 
+import React, { Dispatch, SetStateAction } from 'react';
 import dynamic from 'next/dynamic';
 import type { ContextStore } from '@uiw/react-md-editor';
-import React, { Dispatch, SetStateAction } from 'react';
+import '@uiw/react-markdown-preview/markdown.css';
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 

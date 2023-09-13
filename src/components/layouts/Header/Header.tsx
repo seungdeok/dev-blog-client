@@ -1,48 +1,6 @@
-import { styled } from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-
-const S = {
-  header: styled.header`
-    ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'space-between')}
-    width: 100%;
-    height: 52px;
-    padding: 0 16px;
-  `,
-  logo: styled.div`
-    img {
-      border-radius: 50%;
-    }
-
-    a {
-      ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'center')}
-      height: 44px;      
-
-      div {
-        font-size: 16px;
-        font-weight: bold;
-        margin-left: 8px;
-        color: ${({ theme }) => theme.colors.text['222222']};
-      }
-    }
-  `,
-  link: styled.div`
-    width: 44px;
-    height: 44px;
-    
-    a {
-      ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'center')}
-      width: 100%;
-      height: 100%;
-    }
-
-    svg {
-      width: 36px;
-      height: 36px;
-      fill: black;
-    }
-  `,
-};
+import * as S from './Header.style';
 
 export const Header = () => {
   return (
