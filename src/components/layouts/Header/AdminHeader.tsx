@@ -1,38 +1,7 @@
-/* eslint-disable no-alert */
-import { styled } from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import { signOut } from '@/utils/auth/signOut';
-
-const S = {
-  header: styled.header`
-    ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'space-between')}
-    width: 100%;
-    height: 80px;
-    padding: 0 16px;
-
-    img {
-      border-radius: 50%;
-    }
-  `,
-  links: styled.ul`
-    ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'center')}
-    height: 100%;
-    
-    li {
-      padding: 8px 8px;
-      color: ${({ theme }) => theme.colors.gray['747474']};
-      font-weight: 500;
-
-      &:hover {
-        color: ${({ theme }) => theme.colors.black};
-      }
-    }
-  `,
-  action: styled.button`
-    font-size: 16px;
-  `,
-};
+import * as S from './Header.style';
 
 export const routes = [
   {
@@ -50,20 +19,20 @@ export const AdminHeader = () => {
   };
 
   return (
-    <S.header>
+    <S.adminHeader>
       <Link href="/admin">
         <Image priority alt="avatar" src="/avatar.png" width={48} height={48} />
       </Link>
-      <S.links>
+      <S.adminLinks>
         {routes.map(route => (
           <Link href={route.path} key={route.path}>
             <li>{route.label}</li>
           </Link>
         ))}
-      </S.links>
-      <S.action type="button" onClick={handleClick}>
+      </S.adminLinks>
+      <S.adminAction type="button" onClick={handleClick}>
         sign out
-      </S.action>
-    </S.header>
+      </S.adminAction>
+    </S.adminHeader>
   );
 };

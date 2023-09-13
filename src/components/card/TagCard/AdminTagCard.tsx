@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { styled } from 'styled-components';
+import * as S from './AdminTagCard.style';
 
 interface Props {
   name: string;
@@ -7,23 +7,6 @@ interface Props {
   onUpdate: (name: string) => void;
   onDelete: () => void;
 }
-
-const S = {
-  cardContainer: styled.li`
-    ${({ theme }) => theme.MIXINS.flexBox('row', 'center', 'flex-start')};
-    margin: 8px 0;
-  `,
-  input: styled.input`
-    width: 200px;
-    height: 40px;
-  `,
-  actions: styled.div`
-    margin-left: 8px;
-  `,
-  action: styled.button`
-    padding: 8px 6px;
-  `,
-};
 
 export function AdminCategoryCard({ name, onUpdate, onDelete }: Props) {
   const [categoryName, setCategoryName] = useState(name);

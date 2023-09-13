@@ -1,13 +1,5 @@
-import { styled } from 'styled-components';
-
 import { ReactNode } from 'react';
-
-const S = {
-  container: styled.main`
-    ${({ theme }) => theme.MIXINS.flexBox('column')}
-    width: 100%;
-  `,
-};
+import * as S from './Main.style';
 
 export const Main = ({ children }: { children: ReactNode }) => {
   return <S.container>{children}</S.container>;
