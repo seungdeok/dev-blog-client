@@ -8,4 +8,10 @@ export const markdownStyle = `
   .wmde-markdown.wmde-markdown-color {
     background-color: transparent;
   }
+
+  @media (prefers-color-scheme: dark) {
+    .wmde-markdown {
+      color: #24292f;
+    }
+  }
 `;
