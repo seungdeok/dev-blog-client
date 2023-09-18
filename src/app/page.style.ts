@@ -36,7 +36,7 @@ export const banner = styled.section`
     transform: translate(-50%, -50%);
 
     &::before {
-      content: "Frontend Engineer with an focusing on Javascript, Testing, Automation, Metoring";
+      content: "#Javascript, #Testing, #Automation, #Metoring";
       position: absolute;
       top: 0;
       left: 0;
