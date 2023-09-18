@@ -20,6 +20,7 @@ export const cardIntro = styled.div`
 `;
 
 export const cardHeading = styled.h3`
+  line-height: 1.6;
   font-size: 20px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.text['222222']};
