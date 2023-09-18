@@ -43,10 +43,8 @@ export default function HomePage() {
     <S.container>
       <S.banner>
         <h1>Blog</h1>
-        <div>
-          Frontend Engineer with an focusing on Javascript, Testing, Automation,
-          Metoring
-        </div>
+        <div>#Javascript, #Testing, #Automation, #Metoring</div>
+        {/* <S.tag>Javascript, Testing, Automation, Metoring</S.tag> */}
       </S.banner>
       <S.row>
         <S.mainSection>
