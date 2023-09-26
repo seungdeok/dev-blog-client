@@ -1,13 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { tagAPI } from '@/api/tag';
 import { postAPI } from '@/api/post';
 import WithAuth from '@/components/hocs/WithAuth';
 import { Editor } from '@/components/markdown/Editor';
-import { Tag } from '@/types/Tag';
 import * as S from './page.style';
 
 interface FormProps {
@@ -19,7 +17,6 @@ interface FormProps {
 export default function AdminPostWritePage() {
   const router = useRouter();
   const [content, setContent] = useState('**Hello world!!!**');
-  const [tagList, setTagList] = useState<Tag[]>([]);
 
   const defaultValues = {
     title: '',
@@ -35,27 +32,17 @@ export default function AdminPostWritePage() {
     defaultValues,
   });
 
-  async function initRequest() {
-    const categoryResponse = await tagAPI.list();
-    setTagList([...categoryResponse]);
-  }
-
   const onSubmit = async (data: FormProps) => {
-    console.log(tagList);
     if (window.confirm('게시하시겠습니까?')) {
       await postAPI.create(
         data.draft,
-        data.tags.split(''),
+        data.tags.split(',').map(tag => tag.trim()),
         data.title,
         content
       );
       router.push('/admin/posts');
     }
   };
-
-  useEffect(() => {
-    initRequest();
-  }, []);
 
   return (
     <WithAuth>
