@@ -9,6 +9,10 @@ export const markdownStyle = `
     background-color: transparent;
   }
 
+  .wmde-markdown ol, .wmde-markdown ul {
+    list-style: revert;
+  }
+
   @media (prefers-color-scheme: dark) {
     .wmde-markdown {
       color: #24292f;
